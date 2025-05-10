@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
 
-
+  resources :likes
   resources :users do
     resources :posts
   end

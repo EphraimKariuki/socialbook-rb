@@ -1,0 +1,8 @@
+<% @likes.each do |like|%>
+    <div class="like">
+        <p><strong>Liked by:</strong> <%= like.user.name %></p>
+        <p><strong>Post Author:</strong> <%= like.post.user.name %></p>
+        <p><strong>Liked at:</strong> <%= like.created_at.strftime("%B %d, %Y") %></p>
+    </div>
+<% end %>
+<%= link_to "Back to Posts", root_path %>    

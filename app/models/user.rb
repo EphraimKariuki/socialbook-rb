@@ -9,11 +9,11 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
 
   # User has many followers
-  has_may :follower_follows, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
+  has_many :follower_follows, class_name: "Follow", foreign_key: "follower_id", dependent: :destroy
   has_many :followers, through: :follower_follows, source: :follower
 
   # User has many followed users
-  has_many :followed_follows, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
+  has_many :followned_follows, class_name: "Follow", foreign_key: "followed_id", dependent: :destroy
   has_many :followee, through: :followed_follows, source: :followed
 
   after_create :send_welcome_email
