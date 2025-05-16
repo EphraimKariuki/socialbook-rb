@@ -9,7 +9,7 @@
 <p><strong>Author:</strong> <%= @post.user.name %></p>
 <p><strong>Created at:</strong> <%= @post.created_at.strftime("%B %d, %Y") %></p>
 
-<%= button_to "Like", post_likes_path(@post), method: :post, data: { confirm: "Are you sure?" } %>
+<%= button_to "Like", post_likes_path(@post), method: :post, data: { confirm: "Are you sure?",  turbo: false} %>
 <p> Like: <%= @post.likes.count %></p>
 
 <%= link_to "Back to Posts", root_path %>
