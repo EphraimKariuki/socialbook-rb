@@ -6,9 +6,19 @@
             <div class="user">
                 <p><strong>Name:</strong> <%= user.name %></p>
                 <p><strong>Email:</strong> <%= user.email %></p>
-                
-                <%= button_to "Delete", user_path(user), method: :delete, data: { confirm: "Are you sure?" } %>
+                <p> <strong>Followers:</strong> <%= user.followed_follows.count %></p>
+                <p> <strong>Following:</strong> <%= user.follower_follows.count %></p>
+                <% if user.followed_follows.exists?(follower_id: current_user.id)%>
+                    <% follow = user.followed_follows.find_by(follower_id: current_user.id)%>
+                    <%= button_to "Unfollow", user_follow_path(user, follow), method: :delete %>
+                <% elsif user != current_user %>
+                    <%= button_to "Follow", user_follows_path(user), method: :post %>
+                <% end %>
                 <%= link_to "View", user_path(user) %>
             </div>
         <% end %>
     </div>
+<% else %>
+    <p>No users available.</p>
+<% end %>   
+<%= link_to "Back to Posts", root_path %> 
