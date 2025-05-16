@@ -1,0 +1,47 @@
+<h1> User Details</h1>
+
+
+    <div class="user">
+        <p><strong>Name:</strong> <%= @user.name %></p>
+        <p><strong>Email:</strong> <%= @user.email %></p>
+        <p><strong>Followers:</strong> <%= @user.followed_follows.count %></p>
+        <p><strong>Following:</strong> <%= @user.follower_follows.count %></p>
+
+        <% if @user.followed_follows.exists?(follower_id: current_user.id) %>
+            <% follow = @user.followed_follows.find_by(follower_id: current_user.id) %>
+            <%= button_to "Unfollow", user_follow_path(@user, follow), method: :delete %>
+        <% elsif @user != current_user %>
+            <%= button_to "Follow", user_follows_path(@user), method: :post %>
+        <% end %>
+
+        <h2>User Posts</h2>
+        <% if @posts.any? %>
+            <div class="posts">
+                <% @posts.each do |post| %>
+                    <div class="post">
+                        <p><%= post.content %></p>
+                        <p><strong>Created at:</strong> <%= post.created_at.strftime("%B %d, %Y") %></p>
+
+                        <% if post.likes.exists?(user_id: current_user.id) %>
+                            <% like = post.likes.find_by(user_id: current_user.id) %>
+                            <%= button_to "Unlike", post_like_path(post, like), method: :delete %>
+                        <% else %>
+                            <%= button_to "Like", post_likes_path(post), method: :post, data: { confirm: "Are you sure?" } %>
+                        <% end %>
+
+                        <p> Likes: <%= post.likes.count %></p>
+
+                        <% if post.user == current_user %>
+                            <%= link_to "Edit", edit_user_post_path(@user, post) %>
+                            <%= link_to "Delete", user_post_path(@user, post), method: :delete, data: { confirm: "Are you sure?" } %>
+                        <% end %>
+
+                        <%= link_to "View", user_post_path(@user, post) %>
+                    </div>
+                <% end %>
+            </div>
+        <% else %>
+            <p>No posts available.</p>  
+        <% end %>
+    </div>            
+
