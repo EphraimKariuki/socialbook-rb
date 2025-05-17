@@ -6,10 +6,10 @@
     <div class="posts"> 
         <% @posts.each do |post| %>
             <div class="post">
-                <p><%= post.content %></p>
+                
                 <p><strong>Author:</strong> <%= post.user.name %></p>
                 <p><strong>Created at:</strong> <%= post.created_at.strftime("%B %d, %Y") %></p>
-                
+                <p><%= post.content %></p>
                 <div>
                     <% if post.likes.exists?(user_id: current_user.id)%>
                         <% like = post.likes.find_by(user_id: current_user.id)%>
@@ -24,6 +24,27 @@
                     <%= link_to "Delete", user_post_path(current_user, post), method: :delete, data: { confirm: "Are you sure?" } %>
                 <% end %>
                 <%= link_to "View", user_post_path(current_user, post) %>
+
+
+                <%# comment for this post %>
+                <% if post.comments.any?%>
+                    <h3>Comments</h3>
+                    <div class="list-group">
+                        <% post.comments.each do |comment| %>
+                            <div class="list-group-item">
+                                
+                                <p><strong>Author:</strong> <%= comment.user.name%></p>
+                                <p> <strong> Created at:</strong> <%= comment.created_at.strftime("%B %d, %Y") %></p>
+                                <p><%= comment.content %></p>
+                                <% if comment.user == current_user %>
+                                    <%= button_to "Delete", post_comment_path(post, comment), method: :delete, data: { confirm: "Are you sure?" } %>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>    
+                <% end %>
+                <%= render partial: "comments/comment", locals: {post: post, comment: post.comments.build} %>
+
             </div>
         <% end %>
     </div>
