@@ -5,6 +5,7 @@ Rails.application.configure do
   puts "SECRET_KEY_BASE is set: #{ENV['SECRET_KEY_BASE'].present?}"
   config.assets.initialize_on_precompile = false
 
+
   config.require_master_key = false
   # Code is not reloaded between requests.
   config.enable_reloading = false

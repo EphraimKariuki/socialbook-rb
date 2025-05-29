@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
@@ -51,7 +51,8 @@ RUN chmod +x bin/* && \
     sed -i 's/ruby\.exe$/ruby/' bin/*
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 DATABASE_URL=postgres://user:pass@localhost:5432/fake ./bin/rails assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=DUMMY DATABASE_URL=postgres://localhost ./bin/rails assets:precompile
+
 
 
 
@@ -78,4 +79,4 @@ EXPOSE 80
 CMD ["./bin/thrust", "./bin/rails", "server"]
 
 # My adjustments
-RUN bundle exec rake assets:precompile SKIP_DATABASE=true
+# RUN bundle exec rake assets:precompile SKIP_DATABASE=true
